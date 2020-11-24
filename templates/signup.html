@@ -1,12 +1,25 @@
-{% extends 'base.html' %}
+{% extends 'base_final.html' %}
 {% load crispy_forms_tags %}
+
+{% block title %}Registre-se para usar o Ventura HR{% endblock %}
+
 {% block content %}
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <div class="card  auth-card">
+            <div class="card-body">
+                <h4 class="card-title text-center">Registre-se para usar o Ventura HR</h4>
 
-    <form method="POST">
-      {% csrf_token %}
-        <br>
-      {{ form|crispy }}
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Criar</button>
-    </form>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ next }}">
 
+                    {{ form|crispy }}
+
+                    <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
