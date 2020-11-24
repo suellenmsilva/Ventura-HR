@@ -1,5 +1,5 @@
+from django.contrib.auth import get_user_model
 from django.db import models
-from users.models import CustomUsuario
 
 
 class Jobs(models.Model):
@@ -11,7 +11,7 @@ class Jobs(models.Model):
     )
     cargo = models.CharField('Cargo', max_length=100, blank=True)
     description = models.TextField('Descrição', max_length=250)
-    first_name = models.ForeignKey(CustomUsuario, on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     city = models.CharField('Cidade', max_length=50)
     state = models.CharField('Estado', max_length=50)
     contract_type = models.CharField(max_length=20, choices=TYPE)
@@ -19,5 +19,5 @@ class Jobs(models.Model):
     expiration_date = models.DateField('Data de Expiração')
 
     def __str__(self):
-        return self.cargo, self.first_name, self.contract_type, \
+        return self.cargo, self.user, self.contract_type, \
                self.description
