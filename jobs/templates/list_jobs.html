@@ -5,20 +5,6 @@
 {% block content %}
 <div class="offset-1 col-10 list-div">
     <h1>Vagas disponiveis</h1>
-{#    <div class="container dashboard">#}
-{#        <div class="col-4 dashboard-box" id="dashboard-lastdays">#}
-{#            <h4>Nos últimos 30 dias</h4>#}
-{#            <span>{{ tasksrecently }}</span>#}
-{#        </div>#}
-{#        <div class="col-4 dashboard-box" id="dashboard-done">#}
-{#            <h4>Tarefas finalizadas</h4>#}
-{#            <span>{{ tasksdone }}</span>#}
-{#        </div>#}
-{#        <div class="col-4 dashboard-box" id="dashboard-doing">#}
-{#            <h4>Tarefas para fazer</h4>#}
-{#            <span>{{ tasksdoing }}</span>#}
-{#        </div>#}
-{#    </div>#}
     {% if user.is_authenticated %}
         <a id="add-link" href="newjob/">
             <div class="col-2 add-div">
@@ -32,19 +18,11 @@
                 <i class="fas fa-search" id="search-btn"></i>
             </form>
         </div>
-    {% endif %}
-{#    <div class="col-12 filter-div">#}
-{#        <span>Filtrar por:</span>#}
-{#        <select name="filter" id="filter" class="form-control">#}
-{#            <option value="">Escolha uma opção...</option>#}
-{#            <option value="done">Tarefas concluídas</option>#}
-{#            <option value="doing">Tarefas a fazer</option>#}
-{#        </select>#}
-{#    </div>#}
+
     {% if messages %}
     <ul class="messages">
         {% for message in messages %}
-        <li>{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
+        <li{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
         {% endfor %}
     </ul>
     {% endif %}
@@ -55,13 +33,26 @@
         {% else %}
             <li class="task-item done">
         {% endif %}
-                <span><a href="/job/{{job.cargo}}">{{job.description}} {{job.first_name}} {{ job.contract_type }}</a></span>
+                <span><a href="/job/{{job.id}}">{{job.cargo}}</a></span>
                 <a href="delete/{{job.id}}" class="delete-btn"><span><i class="fas fa-trash"></i></span></a>
                 <a href="edit/{{job.id}}"><span><i class="fas fa-edit"></i></span></a>
                 <a href="changestatus/{{job.id}}"><i class="fas fa-check"></i></a>
             </li>
         {% endfor %}
     </ul>
+    {% else %}
+    <ul class="task-list">
+        {% for job in jobs %}
+        {% if job.done == 'doing' %}
+            <li class="task-item">
+        {% else %}
+            <li class="task-item done">
+        {% endif %}
+                <span><a href="/job/{{job.id}}">{{job.cargo}}</a></span>
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     <div class="pagination">
         <span class="step-links">
             {% if jobs.has_previous %}
