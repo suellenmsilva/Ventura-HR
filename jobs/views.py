@@ -2,17 +2,24 @@ from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.http import HttpResponse
 from .models import Jobs
 from .forms import JobModelForm
-import datetime
 
 
 def jobs(request):
-    context = {
-        'jobs': Jobs.objects.all()
-    }
-    return render(request, 'list_jobs.html', context)
+    search = request.GET.get('search')
+    if search:
+        jobs = Jobs.objects.filter(cargo__icontains=search)
+
+    else:
+        job_list = Jobs.objects.all().order_by('-creation_date')
+
+        paginator = Paginator(job_list, 5)
+
+        page = request.GET.get('page')
+        jobs = paginator.get_page(page)
+
+    return render(request, 'list_jobs.html', {'jobs': jobs})
 
 
 @login_required
@@ -35,33 +42,6 @@ def newJob(request):
     return render(request, 'add_jobs.html', context)
 
 
-# @login_required
-# def jobList(request):
-#     search = request.GET.get('search')
-#     filter = request.GET.get('filter')
-#     # tasksDoneRecently = Jobs.objects.filter(done='done', updated_at__gt=datetime.datetime.now() - datetime.timedelta(
-#     #     days=30)).count()
-#     # tasksDone = Jobs.objects.filter(done='done', user=request.user).count()
-#     # tasksDoing = Jobs.objects.filter(done='doing', user=request.user).count()
-#
-#     if search:
-#         jobs = Jobs.objects.filter(title__icontains=search, user=request.user)
-#     elif filter:
-#         jobs = Jobs.objects.filter(done=filter, user=request.user)
-#     else:
-#         job_list = Jobs.objects.all().order_by('-creation_date').filter(user=request.user)
-#
-#         paginator = Paginator(job_list, 3)
-#
-#         page = request.GET.get('page')
-#         jobs = paginator.get_page(page)
-#
-#     return render(request, 'listar_vagas.html',
-#                   {'jobs': jobs})
-#                   # {'jobs': jobs, 'tasksrecently': tasksDoneRecently, 'tasksdone': tasksDone,
-#                   #  'tasksdoing': tasksDoing})
-
-
 @login_required
 def jobView(request, id):
     job = get_object_or_404(Jobs, pk=id)
@@ -80,7 +60,7 @@ def editJob(request, id):
             job.save()
             return redirect('/')
         else:
-            return render(request, 'editar_vagas.html', {'form': form, 'task': job})
+            return render(request, 'edit_jobs.html', {'form': form, 'task': job})
     else:
         return render(request, 'edit_jobs.html', {'form': form, 'task': job})
 
@@ -93,4 +73,18 @@ def deleteJob(request, id):
     messages.info(request, 'Vaga deletada com sucesso.')
 
     return redirect('/')
+
+@login_required
+def changeStatus(request, id):
+    job = get_object_or_404(Jobs, pk=id)
+
+    if(job.done == 'doing'):
+        task.done = 'done'
+    else:
+        task.done = 'doing'
+
+    task.save()
+
+    return redirect('/')
+
 

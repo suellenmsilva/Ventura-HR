@@ -45,7 +45,7 @@
 
 .dashboard-box {
     float: left;
-    background-color: #DFDFDF;
+    background-color: #FFF;
     color: #FFF;
     padding: 20px;
     box-sizing: border-box;
@@ -138,11 +138,11 @@
     height: 50px;
     padding: 0 15px;
     padding-top: 10px;
-    border-bottom: 1px dashed #CCC;
+    border-bottom: 1px dashed #FFF;
 }
 
 .task-item.done {
-    background-color: #CCC;
+    background-color: #FFF;
 }
 
 .fas.fa-trash {
@@ -162,7 +162,7 @@
 }
 
 .fa-check {
-    color: #CCC;
+    color: #FFF;
     cursor: pointer;
     margin: 5px;
     font-size: 20px;
@@ -176,7 +176,7 @@
 /* Rodapé */
 footer {
     background-color: #333;
-    height: 300px;
+    height: 200px;
     border-top: 2px solid #202020;
 }
 
