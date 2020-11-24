@@ -19,4 +19,5 @@ class Jobs(models.Model):
     expiration_date = models.DateField('Data de Expiração')
 
     def __str__(self):
-        return self.cargo, self.first_name, self.contract_type, self.description
+        return self.cargo, self.first_name, self.contract_type, \
+               self.description

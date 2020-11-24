@@ -44,7 +44,7 @@
     {% if messages %}
     <ul class="messages">
         {% for message in messages %}
-        <li{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
+        <li>{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
         {% endfor %}
     </ul>
     {% endif %}
@@ -55,10 +55,10 @@
         {% else %}
             <li class="task-item done">
         {% endif %}
-                <span><a href="/job/{{job.cargo}}">{{job.description}} {{ job.contract_type }}</a></span>
+                <span><a href="/job/{{job.cargo}}">{{job.description}} {{job.first_name}} {{ job.contract_type }}</a></span>
                 <a href="delete/{{job.id}}" class="delete-btn"><span><i class="fas fa-trash"></i></span></a>
                 <a href="edit/{{job.id}}"><span><i class="fas fa-edit"></i></span></a>
-{#                <a href="changestatus/{{job.id}}"><i class="fas fa-check"></i></a>#}
+                <a href="changestatus/{{job.id}}"><i class="fas fa-check"></i></a>
             </li>
         {% endfor %}
     </ul>
