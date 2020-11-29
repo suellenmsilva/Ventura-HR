@@ -37,13 +37,14 @@
                         <a href="edit/{{job.id}}"><span><i class="fas fa-edit"></i></span></a>
                     </li>
             {% endfor %}
+    {% else %}
+        <ul class="task-list">
+        {% for job in jobs %}
+                <li class="task-item done">
+                    <span><a href="/job/{{job.id}">{{job.cargo}}</a></span>
+                </li>
+        {% endfor %}
     {% endif %}
-            <ul class="task-list">
-            {% for job in jobs %}
-                    <li class="task-item done">
-                        <span><a href="/contas/login">{{job.cargo}}</a></span>
-                    </li>
-            {% endfor %}
     <div class="pagination">
         <span class="step-links">
             {% if jobs.has_previous %}
