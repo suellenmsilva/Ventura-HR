@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
+from criterict.models import Criterict
+
 
 class Jobs(models.Model):
     TYPE = (
@@ -17,6 +19,7 @@ class Jobs(models.Model):
     contract_type = models.CharField(max_length=20, choices=TYPE)
     creation_date = models.DateTimeField(auto_now_add=True)
     expiration_date = models.DateField('Data de Expiração')
+    criterict = models.ForeignKey(Criterict, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.cargo, self.user, self.contract_type, \
