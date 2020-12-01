@@ -3,69 +3,75 @@
 {% block title %}Vagas disponiveis{% endblock %}
 
 {% block content %}
-<div class="offset-1 col-10 list-div">
-    <h1>Vagas disponiveis</h1>
-    {% if user.is_authenticated %}
-    {% if perms.jobs.add_jobs %}
-        <a id="add-link" href="newjob/">
-            <div class="col-2 add-div">
-                <i class="fas fa-plus"></i> Adicionar vagas
+    <div class="offset-1 col-10 list-div">
+        <h1>Vagas disponiveis</h1>
+        {% if user.is_authenticated %}
+            {% if perms.jobs.add_jobs %}
+                <a id="add-link" href="newjob/">
+                    <div class="col-2 add-div">
+                        <i class="fas fa-plus"></i> Adicionar vagas
+                    </div>
+                </a>
+                 <a id="add-lin" href="newcriterio/">
+                    <div class="col-2 add-div">
+                        <i class="fas fa-plus"></i> Adicionar criterio
+                    </div>
+                </a>
+            {% endif %}
+            {% if perms.jobs.add_aplication %}
+                <a id="add-li" href="aplication/">
+                        <div class="col-2 add-div">
+                            <i class="fas fa-plus"></i> Aplicar uma Vaga
+                        </div>
+                    </a>
+            {% endif %}
+        {% endif %}
+            <div class="col-9 search-div">
+                <form method="GET" id="search-form">
+                    <input class="form-control" type="text" id="search" name="search"
+                           placeholder="Digite o nome da vaga para buscar..." value="{{ request.GET.search }}">
+                    <i class="fas fa-search" id="search-btn"></i>
+                </form>
             </div>
-        </a>
-         <a id="add-lin" href="newcriterio/">
-            <div class="col-2 add-div">
-                <i class="fas fa-plus"></i> Adicionar criterio
-            </div>
-        </a>
-    {% endif %}
-        <div class="col-9 search-div">
-            <form method="GET" id="search-form">
-                <input class="form-control" type="text" id="search" name="search"
-                       placeholder="Digite o nome da vaga para buscar..." value="{{ request.GET.search }}">
-                <i class="fas fa-search" id="search-btn"></i>
-            </form>
-        </div>
-    {% endif %}
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    {% if perms.jobs.add_jobs %}
-        <ul class="task-list">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}<li {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if perms.jobs.add_jobs %}
+            <ul class="task-list">
+                {% for job in jobs %}
+                        <li class="task-item done">
+                            <span><a href="/job/{{job.id}}">{{job.cargo}}</a></span>
+                            <a href="delete/{{job.id}}" class="delete-btn"><span><i class="fas fa-trash"></i></span></a>
+                            <a href="edit/{{job.id}}"><span><i class="fas fa-edit"></i></span></a>
+                        </li>
+                {% endfor %}
+        {% else %}
+            <ul class="task-list">
             {% for job in jobs %}
                     <li class="task-item done">
                         <span><a href="/job/{{job.id}}">{{job.cargo}}</a></span>
-                        <a href="delete/{{job.id}}" class="delete-btn"><span><i class="fas fa-trash"></i></span></a>
-                        <a href="edit/{{job.id}}"><span><i class="fas fa-edit"></i></span></a>
+                        <a href="aplicar/"><span><i class="fas fa-edit"></i></span></a>
                     </li>
             {% endfor %}
-    {% else %}
-        <ul class="task-list">
-        {% for job in jobs %}
-                <li class="task-item done">
-                    <span><a href="/job/{{job.id}}">{{job.cargo}}</a></span>
-                    <a href="aplicar/{{job.id}}"><span><i class="fas fa-edit"></i></span></a>
-                </li>
-        {% endfor %}
-    {% endif %}
-    <div class="pagination">
-        <span class="step-links">
-            {% if jobs.has_previous %}
-                <a href="?page={{ jobs.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
-            {% endif %}
+        {% endif %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if jobs.has_previous %}
+                    <a href="?page={{ jobs.previous_page_number }}"><i class="fas fa-arrow-left"></i></a>
+                {% endif %}
 
-            {% if jobs.paginator.num_pages %}
-            <span class="current">
-                {{ jobs.number }} de {{ jobs.paginator.num_pages }}
+                {% if jobs.paginator.num_pages %}
+                <span class="current">
+                    {{ jobs.number }} de {{ jobs.paginator.num_pages }}
+                </span>
+                {% endif %}
+                {% if jobs.has_next %}
+                    <a href="?page={{ jobs.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
+                {% endif %}
             </span>
-            {% endif %}
-            {% if jobs.has_next %}
-                <a href="?page={{ jobs.next_page_number }}"><i class="fas fa-arrow-right"></i></a>
-            {% endif %}
-        </span>
+        </div>
     </div>
-</div>
 {% endblock %}

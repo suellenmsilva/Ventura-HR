@@ -17,13 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 
-from users.views import signup_view
+from users.views import signup_view, perfil
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('contas/', include('django.contrib.auth.urls')),
     path('', include('jobs.urls')),
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
-    path('signup/', signup_view, name="signup")
-]
+    path('signup/', signup_view, name="signup"),
+    path('perfil/<int:id>', perfil, name="perfil")
 
+]

@@ -1,18 +1,22 @@
 {% extends 'base_final.html' %}
 
-{% block title %}Lista de Vagas{% endblock %}
+{% block title %}Descrição da Vagas{% endblock %}
 
 {% block content %}
 <div class="offset-1 col-10 list-div">
-    <form method="POST">
-        {% csrf_token %}
         <h1>{{job.cargo}}</h1>
+        <h3>Descrição</h3>
         <p>{{job.description}}</p>
+        <h3>Empresa</h3>
         <p>{{job.user}}</p>
+        <h3>Contrato</h3>
         <p>{{job.contract_type}}</p>
+        <h3>Cidade</h3>
         <p>{{job.city}}</p>
-        <p>{{job.state}}</p>
-         <input type="submit" class="btn btn-success" value="Aplicar">
-    </form>
+        <h3>Estado</h3>
+        <p>{{job.state}}
+        {% if perms.jobs.add_jobs %}
+                <h3>Participantes</h3><p>{{list}}</p>
+        {% endif %}
 </div>
 {% endblock %}

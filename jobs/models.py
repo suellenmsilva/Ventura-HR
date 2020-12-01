@@ -33,7 +33,20 @@ class Jobs(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
     expiration_date = models.DateField('Data de Expiração')
     criterict = models.ForeignKey(Criterio, on_delete=models.CASCADE)
-    candidate = models.ManyToManyField(get_user_model(), related_name='Candidato')
 
     def __str__(self):
         return '{} '.format(self.cargo)
+
+
+class Aplication(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    jobs = models.ForeignKey(Jobs, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Aplication'
+        verbose_name_plural = 'Aplications'
+        unique_together = ['user', 'jobs']
+
+    def __str__(self):
+        return '{} {}'.format(self.user, self.jobs)
