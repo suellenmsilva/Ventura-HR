@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, get_user, login
 from django.db import models
 
 
@@ -33,6 +33,7 @@ class Jobs(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
     expiration_date = models.DateField('Data de Expiração')
     criterict = models.ForeignKey(Criterio, on_delete=models.CASCADE)
+    candidate = models.ManyToManyField(get_user_model(), related_name='Candidato')
 
     def __str__(self):
         return '{} '.format(self.cargo)

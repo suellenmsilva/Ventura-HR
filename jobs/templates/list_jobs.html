@@ -46,7 +46,8 @@
         <ul class="task-list">
         {% for job in jobs %}
                 <li class="task-item done">
-                    <span><a href="">{{job.cargo}}</a></span>
+                    <span><a href="/job/{{job.id}}">{{job.cargo}}</a></span>
+                    <a href="aplicar/{{job.id}}"><span><i class="fas fa-edit"></i></span></a>
                 </li>
         {% endfor %}
     {% endif %}

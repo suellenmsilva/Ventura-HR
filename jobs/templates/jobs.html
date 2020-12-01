@@ -4,12 +4,15 @@
 
 {% block content %}
 <div class="offset-1 col-10 list-div">
-    <h1>{{job.cargo}}</h1>
-    <p>{{job.description}}</p>
-    <p>{{job.user}}</p>
-    <p>{{job.contract_type}}</p>
-    <p>{{job.city}}</p>
-    <p>{{job.state}}</p>
-
+    <form method="POST">
+        {% csrf_token %}
+        <h1>{{job.cargo}}</h1>
+        <p>{{job.description}}</p>
+        <p>{{job.user}}</p>
+        <p>{{job.contract_type}}</p>
+        <p>{{job.city}}</p>
+        <p>{{job.state}}</p>
+         <input type="submit" class="btn btn-success" value="Aplicar">
+    </form>
 </div>
 {% endblock %}

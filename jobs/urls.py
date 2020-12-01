@@ -1,6 +1,6 @@
 from django.urls import path
 
-from jobs.views import jobs, newJob, jobView, editJob, deleteJob, newCriterio
+from jobs.views import jobs, newJob, jobView, editJob, deleteJob, newCriterio, aplicar
 
 urlpatterns = [
     path('', jobs, name='job'),
@@ -10,6 +10,7 @@ urlpatterns = [
     path('newjob/newcriterio/', newCriterio, name="new-criterio"),
     path('newcriterio/', newCriterio, name="new-criterio"),
     path('edit/<int:id>', editJob, name="edit-job"),
+    path('aplicar/<int:id>', aplicar, name="aplicar-job"),
     path('delete/<int:id>', deleteJob, name="delete-job"),
 
 ]

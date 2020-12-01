@@ -9,6 +9,13 @@ class JobModelForm(forms.ModelForm):
         fields = ['cargo', 'description', 'city', 'state', 'contract_type', 'expiration_date', 'criterict']
 
 
+class AplicarModelForm(forms.ModelForm):
+
+    class Meta:
+        model = Jobs
+        fields = ['candidate']
+
+
 class CriterioModelForm(forms.ModelForm):
 
     class Meta:
