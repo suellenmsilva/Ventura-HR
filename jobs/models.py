@@ -13,7 +13,7 @@ class Criterio(models.Model):
     experience = models.CharField(max_length=20, choices=TYPE_crit)
 
     def __str__(self):
-        return '{} {} '.format(self.criterict, self.experience)
+        return '{}  '.format(self.criterict)
 
 
 class Jobs(models.Model):
@@ -35,4 +35,4 @@ class Jobs(models.Model):
     criterict = models.ForeignKey(Criterio, on_delete=models.CASCADE)
 
     def __str__(self):
-        return '{} {} {} '.format(self.cargo, self.user, self.criterict)
+        return '{} '.format(self.cargo)
