@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
 
 from .models import Jobs
-from .forms import JobModelForm
+from .forms import JobModelForm, CriterioModelForm
 
 
 def jobs(request):
@@ -49,11 +49,28 @@ def newJob(request):
         form = JobModelForm()
         return render(request, 'add_jobs.html', {'form': form})
 
-    context = {
-        'form': form
-    }
-
     return redirect('/')
+
+
+@login_required
+def newCriterio(request):
+
+    if str(request.method) == 'POST':
+
+        form = CriterioModelForm(request.POST)
+        if form.is_valid():
+            criterio = form.save(commit=False)
+
+            criterio.user = request.user
+            criterio.save()
+            return redirect('/')
+        else:
+            messages.error(request, 'Erro ao cadastrar um criterio')
+    else:
+        form = CriterioModelForm()
+        return render(request, 'add_criterio.html', {'form': form})
+
+    return redirect('add_jobs.html')
 
 
 @login_required
