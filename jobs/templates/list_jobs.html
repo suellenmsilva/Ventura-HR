@@ -12,6 +12,11 @@
                 <i class="fas fa-plus"></i> Adicionar vagas
             </div>
         </a>
+         <a id="add-lin" href="newcriterio/">
+            <div class="col-2 add-div">
+                <i class="fas fa-plus"></i> Adicionar criterio
+            </div>
+        </a>
     {% endif %}
         <div class="col-9 search-div">
             <form method="GET" id="search-form">
@@ -41,7 +46,7 @@
         <ul class="task-list">
         {% for job in jobs %}
                 <li class="task-item done">
-                    <span><a href="/job/{{job.id}">{{job.cargo}}</a></span>
+                    <span><a href="">{{job.cargo}}</a></span>
                 </li>
         {% endfor %}
     {% endif %}
