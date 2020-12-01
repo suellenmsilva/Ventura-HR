@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 
 from users.forms import CustomUsuarioCreateForm
+from users.models import CustomUsuario
 
 
 def home_view(request):
@@ -19,3 +21,9 @@ def signup_view(request):
         # login(request, user)
         return redirect('index')
     return render(request, 'signup.html', {'form': form})
+
+
+@login_required
+def perfil(request, id):
+    perfil = get_object_or_404(CustomUsuario, pk=id)
+    return render(request, 'perfil.html', {'perfil': perfil})

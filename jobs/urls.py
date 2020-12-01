@@ -1,15 +1,14 @@
 from django.urls import path
 
-from jobs.views import jobs, newJob, jobView, editJob, deleteJob, newCriterio
+from jobs.views import jobs, aplication, new_job, new_criterio, edit_job, delete_job, job_view
 
 urlpatterns = [
     path('', jobs, name='job'),
-    # path('', jobs_adc, name='job-list'),
-    path('job/<int:id>', jobView, name="job-view"),
-    path('newjob/', newJob, name="new-job"),
-    path('newjob/newcriterio/', newCriterio, name="new-criterio"),
-    path('newcriterio/', newCriterio, name="new-criterio"),
-    path('edit/<int:id>', editJob, name="edit-job"),
-    path('delete/<int:id>', deleteJob, name="delete-job"),
-
+    path('job/<int:id>', job_view, name="job-view"),
+    path('newjob/', new_job, name="new-job"),
+    path('newjob/newcriterio/', new_criterio, name="new-criterio"),
+    path('newcriterio/', new_criterio, name="new-criterio"),
+    path('edit/<int:id>', edit_job, name="edit-job"),
+    path('aplication/', aplication, name="aplication-job"),
+    path('delete/<int:id>', delete_job, name="delete-job")
 ]

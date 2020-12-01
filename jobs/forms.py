@@ -1,5 +1,5 @@
 from django import forms
-from .models import Jobs,Criterio
+from .models import Jobs, Criterio, Aplication
 
 
 class JobModelForm(forms.ModelForm):
@@ -7,6 +7,13 @@ class JobModelForm(forms.ModelForm):
     class Meta:
         model = Jobs
         fields = ['cargo', 'description', 'city', 'state', 'contract_type', 'expiration_date', 'criterict']
+
+
+class AplicationModelForm(forms.ModelForm):
+
+    class Meta:
+        model = Aplication
+        fields = ['jobs']
 
 
 class CriterioModelForm(forms.ModelForm):

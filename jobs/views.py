@@ -1,10 +1,15 @@
 from django.contrib import messages
+from django.db.models import Count, Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
 
-from .models import Jobs
-from .forms import JobModelForm, CriterioModelForm
+from .models import Jobs, Aplication
+from .forms import JobModelForm, CriterioModelForm, AplicationModelForm
+
+
+'''Faz a listagem das vagas, paginação e search das vagas, aqui e feito por usuario e empresa, em algumas parte
+temos tratamento de permições'''
 
 
 def jobs(request):
@@ -29,10 +34,12 @@ def jobs(request):
     return render(request, 'list_jobs.html', {'jobs': jobs})
 
 
-#Adicionar uma nova vaga, exclusivo para empresa
+''' Adicionar uma nova vaga, exclusivo para empresa '''
+
+
 @permission_required('jobs.add_jobs')
 @login_required
-def newJob(request):
+def new_job(request):
 
     if str(request.method) == 'POST':
 
@@ -52,8 +59,11 @@ def newJob(request):
     return redirect('/')
 
 
+''' Adicionando um criterio, fluxonão esta certo, deve ser feito uma refatoração e uma melhoria na construção'''
+
+
 @login_required
-def newCriterio(request):
+def new_criterio(request):
 
     if str(request.method) == 'POST':
 
@@ -73,15 +83,27 @@ def newCriterio(request):
     return redirect('add_jobs.html')
 
 
-@login_required
-def jobView(request, id):
-    job = get_object_or_404(Jobs, pk=id)
-    return render(request, 'jobs.html', {'job': job})
+'''Listar informações sobre uma vaga'''
 
-#Editar uma nova vaga, exclusivo para empresa
+
+@login_required
+def job_view(request, id):
+    job = get_object_or_404(Jobs, pk=id)
+    if request.user.has_perm('jobs.add_jobs'):
+        jobs = Aplication.objects.filter(jobs_id=id)
+        list = len(jobs)
+        return render(request, 'jobs.html', {'job': job, 'list': list})
+    else:
+        return render(request, 'jobs.html', {'job': job})
+
+
+
+'''Editar uma nova vaga, exclusivo para empresa'''
+
+
 @permission_required('jobs.change_jobs')
 @login_required
-def editJob(request, id):
+def edit_job(request, id):
     job = get_object_or_404(Jobs, pk=id)
     form = JobModelForm(instance=job)
     if(request.method == 'POST'):
@@ -91,20 +113,42 @@ def editJob(request, id):
             job.save()
             return redirect('/')
         else:
-                return render(request, 'edit_jobs.html', {'form': form, 'task': job})
+            return render(request, 'edit_jobs.html', {'form': form, 'task': job})
     else:
         return render(request, 'edit_jobs.html', {'form': form, 'task': job})
 
 
-#Deletar uma nova vaga, exclusivo para empresa
+'''Incluir usuarios em uma vaga, exclusivo para usarios '''
+
+
+@permission_required('jobs.add_aplication')
+@login_required
+def aplication(request):
+    if str(request.method) == 'POST':
+        form = AplicationModelForm(request.POST)
+        if form.is_valid():
+            aplication = form.save(commit=False)
+            aplication.user = request.user
+            aplication.save()
+            return redirect('/')
+        else:
+            messages.error(request, 'Erro ao aplicar a uma vaga')
+    else:
+        form = AplicationModelForm()
+        return render(request, 'aplicar.html', {'form': form})
+
+    return redirect('aplicar.html')
+
+
+'''Deletar uma nova vaga, exclusivo para empresa'''
+
+
 @permission_required('jobs.delete_jobs')
 @login_required
-def deleteJob(request, id):
+def delete_job(request, id):
     job = get_object_or_404(Jobs, pk=id)
 
     job.delete()
     messages.info(request, 'Vaga deletada com sucesso.')
 
     return redirect('/')
-
-
