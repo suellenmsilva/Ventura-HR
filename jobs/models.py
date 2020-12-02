@@ -3,14 +3,7 @@ from django.db import models
 
 
 class Criterio(models.Model):
-    TYPE_crit = (
-        ('ruim', 'Ruim'),
-        ('bom', 'Bom'),
-        ('muito_bom', 'Muito Bom'),
-        ('excelente', 'Excelente'),
-    )
     criterict = models.CharField('Criterio', max_length=100, blank=True)
-    experience = models.CharField(max_length=20, choices=TYPE_crit)
 
     def __str__(self):
         return '{}  '.format(self.criterict)
@@ -32,7 +25,7 @@ class Jobs(models.Model):
     contract_type = models.CharField(max_length=20, choices=TYPE)
     creation_date = models.DateTimeField(auto_now_add=True)
     expiration_date = models.DateField('Data de Expiração')
-    criterict = models.ForeignKey(Criterio, on_delete=models.CASCADE)
+    criterict = models.ManyToManyField(Criterio)
 
     def __str__(self):
         return '{} '.format(self.cargo)
