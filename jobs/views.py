@@ -73,7 +73,7 @@ def new_criterio(request):
 
             criterio.user = request.user
             criterio.save()
-            return redirect('/')
+            return redirect('/newjob')
         else:
             messages.error(request, 'Erro ao cadastrar um criterio')
     else:

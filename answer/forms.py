@@ -14,4 +14,4 @@ class AnswerCriterictModelForm(forms.ModelForm):
 
     class Meta:
         model = AnswerCriterict
-        fields = ['criterict','experience']
+        fields = ['criterict', 'experience']

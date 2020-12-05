@@ -3,7 +3,7 @@ from django.db import models
 
 
 class Criterio(models.Model):
-    criterict = models.CharField('Criterio', max_length=100, blank=True)
+    criterict = models.CharField('Criterio', max_length=100, unique=True, blank=True)
 
     def __str__(self):
         return '{}  '.format(self.criterict)
