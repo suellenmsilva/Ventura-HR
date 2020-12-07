@@ -73,7 +73,7 @@ def new_criterio(request):
 
             criterio.user = request.user
             criterio.save()
-            return redirect('/')
+            return redirect('/newjob')
         else:
             messages.error(request, 'Erro ao cadastrar um criterio')
     else:
@@ -123,21 +123,28 @@ def edit_job(request, id):
 
 @permission_required('jobs.add_aplication')
 @login_required
-def aplication(request):
+def aplication(request, id):
+    job = get_object_or_404(Jobs, pk=id)
+
     if str(request.method) == 'POST':
         form = AplicationModelForm(request.POST)
+
         if form.is_valid():
+
             aplication = form.save(commit=False)
+
             aplication.user = request.user
+            aplication.jobs = job
+
             aplication.save()
             return redirect('/')
         else:
             messages.error(request, 'Erro ao aplicar a uma vaga')
     else:
         form = AplicationModelForm()
-        return render(request, 'aplicar.html', {'form': form})
+        return render(request, 'aplicar.html', {'form': form, 'task': job})
 
-    return redirect('aplicar.html')
+    return render(request, 'aplicar.html', {'form': form, 'task': job})
 
 
 '''Deletar uma nova vaga, exclusivo para empresa'''

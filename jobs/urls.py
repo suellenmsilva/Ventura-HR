@@ -9,6 +9,6 @@ urlpatterns = [
     path('newjob/newcriterio/', new_criterio, name="new-criterio"),
     path('newcriterio/', new_criterio, name="new-criterio"),
     path('edit/<int:id>', edit_job, name="edit-job"),
-    path('aplication/', aplication, name="aplication-job"),
+    path('aplication/<int:id>', aplication, name="aplication-job"),
     path('delete/<int:id>', delete_job, name="delete-job")
 ]

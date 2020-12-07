@@ -1,9 +1,10 @@
-from django.contrib.auth import get_user_model, get_user, login
+from django.contrib.auth import get_user_model
 from django.db import models
+from answer.models import Answer
 
 
 class Criterio(models.Model):
-    criterict = models.CharField('Criterio', max_length=100, blank=True)
+    criterict = models.CharField('Criterio', max_length=100, unique=True, blank=True)
 
     def __str__(self):
         return '{}  '.format(self.criterict)
@@ -22,10 +23,10 @@ class Jobs(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     city = models.CharField('Cidade', max_length=50)
     state = models.CharField('Estado', max_length=50)
-    contract_type = models.CharField(max_length=20, choices=TYPE)
+    contract_type = models.CharField('Tipo de Contrato', max_length=20, choices=TYPE)
     creation_date = models.DateTimeField(auto_now_add=True)
     expiration_date = models.DateField('Data de Expiração')
-    criterict = models.ManyToManyField(Criterio)
+    criterict = models.ForeignKey(Criterio, on_delete=models.CASCADE)
 
     def __str__(self):
         return '{} '.format(self.cargo)
@@ -34,6 +35,7 @@ class Jobs(models.Model):
 class Aplication(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     jobs = models.ForeignKey(Jobs, on_delete=models.CASCADE)
+    Answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -42,4 +44,4 @@ class Aplication(models.Model):
         unique_together = ['user', 'jobs']
 
     def __str__(self):
-        return '{} {}'.format(self.user, self.jobs)
+        return '{} {} {}'.format(self.user, self.jobs, self.Answer)

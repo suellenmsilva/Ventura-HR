@@ -1,15 +1,14 @@
 {% extends 'base_final.html' %}
 {% load crispy_forms_tags %}
-{% block title %}{{job.criterict}}{% endblock %}
+{% block title %}{{job.cargo}}{% endblock %}
 
 {% block content %}
 <div class="offset-1 col-10 list-div">
-    <h1>Vaga - {{task.cargo}}</h1>
-    <h3>Criterio - {{task.criterict}}</h3>
+    <h1>Aplicando </h1>
     <form method="POST">
         {% csrf_token %}
         {{ form|crispy }}
-        <input type="submit" class="btn btn-success" value="Aplicar Vaga">
+        <input type="submit" class="btn btn-success" value="Aplicar">
     </form>
 </div>
 {% endblock %}
