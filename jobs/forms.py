@@ -17,7 +17,7 @@ class AplicationModelForm(forms.ModelForm):
 
     class Meta:
         model = Aplication
-        fields = ['jobs']
+        fields = ['Answer']
 
 
 class CriterioModelForm(forms.ModelForm):

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from answer.models import AnswerCriterict, Answer
+from answer.models import Answer
 
 admin.site.register(Answer)
-admin.site.register(AnswerCriterict)
+

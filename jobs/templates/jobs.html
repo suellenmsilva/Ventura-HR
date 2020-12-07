@@ -3,22 +3,22 @@
 {% block title %}Descrição da Vagas{% endblock %}
 
 {% block content %}
-<div class="offset-1 col-10 list-div">
-        <h1>{{job.cargo}}</h1>
-        <h3>Descrição</h3>
-        <p>{{job.description}}</p>
-        <h3>Empresa</h3>
-        <p>{{job.user}}</p>
-        <h3>Contrato</h3>
-        <p>{{job.contract_type}}</p>
-        <h3>Cidade</h3>
-        <p>{{job.city}}</p>
-        <h3>Estado</h3>
-        <p>{{job.state}}
-        <h3>Criterio</h3>
-        <p>{{job.criterio}}
-        {% if perms.jobs.add_jobs %}
-                <h3>Participantes</h3><p>{{list}}</p>
-        {% endif %}
-</div>
+        <div class="offset-1 col-10 list-div">
+                <h1>{{job.cargo}}</h1>
+                <h3>Descrição = {{job.description}}</h3>
+                <h3>Empresa = {{job.user}}</h3>
+                <h3>Contrato = {{job.contract_type}}</h3>
+                <h3>Cidade = {{job.city}}</h3>
+                <h3>Estado = {{job.state}}</h3>
+                <h3>Criterio = {{job.criterict}}</h3>
+                {% if perms.jobs.add_jobs %}
+                <h3>Participantes = {{list}}</h3>
+                {% endif %}
+
+                <a id="add-li" href="/aplication/{{job.id}}">
+                        <div class="col-2 add-div">
+                                <i class="fas fa-plus"></i> Aplicar uma Vaga
+                        </div>
+                </a>
+        </div>
 {% endblock %}
