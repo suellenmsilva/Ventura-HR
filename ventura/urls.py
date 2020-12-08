@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 
-from users.views import signup_view, perfil
+from users.views import signup_view, perfil, edit_user, delete_user
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,6 +25,9 @@ urlpatterns = [
     path('', include('jobs.urls')),
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
     path('signup/', signup_view, name="signup"),
-    path('perfil/<int:id>', perfil, name="perfil")
+    path('perfil/<int:id>', perfil, name="perfil"),
+    path('edit_user/<int:id>', edit_user, name="edit_user"),
+    path('delete_user/<int:id>', delete_user, name="delete_user"),
+
 
 ]

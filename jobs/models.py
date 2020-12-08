@@ -4,7 +4,14 @@ from answer.models import Answer
 
 
 class Criterio(models.Model):
+    TYPE_crit = (
+        ('ruim', 'Ruim'),
+        ('bom', 'Bom'),
+        ('muito_bom', 'Muito Bom'),
+        ('excelente', 'Excelente'),
+    )
     criterict = models.CharField('Criterio', max_length=100, unique=True, blank=True)
+    experience = models.CharField('Experiencia', max_length=20, choices=TYPE_crit)
 
     def __str__(self):
         return '{}  '.format(self.criterict)

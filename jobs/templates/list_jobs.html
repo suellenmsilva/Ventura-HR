@@ -3,6 +3,7 @@
 {% block title %}Vagas disponiveis{% endblock %}
 
 {% block content %}
+
     <div class="offset-1 col-10 list-div">
         <h1>Vagas disponiveis</h1>
         {% if user.is_authenticated %}
@@ -18,13 +19,6 @@
                     </div>
                 </a>
             {% endif %}
-            {% if perms.jobs.add_aplication %}
-                <a id="add-li" href="aplication/">
-                        <div class="col-2 add-div">
-                            <i class="fas fa-plus"></i> Aplicar uma Vaga
-                        </div>
-                    </a>
-            {% endif %}
         {% endif %}
             <div class="col-9 search-div">
                 <form method="GET" id="search-form">
@@ -39,6 +33,7 @@
                 {% endfor %}
             </ul>
         {% endif %}
+       <!--- Precisa refatorar essa condição -->
         {% if perms.jobs.add_jobs %}
             <ul class="task-list">
                 {% for job in jobs %}
@@ -49,13 +44,22 @@
                         </li>
                 {% endfor %}
         {% else %}
-            <ul class="task-list">
-            {% for job in jobs %}
-                    <li class="task-item done">
-                        <span><a href="/job/{{job.id}}">{{job.cargo}}</a></span>
-                        <a href="aplication/{{job.id}}"><span><i class="fas fa-edit"></i></span></a>
-                    </li>
-            {% endfor %}
+            {% if perms.jobs.add_aplication %}
+                <ul class="task-list">
+                    {% for job in jobs %}
+                            <li class="task-item done">
+                                <span><a href="/job/{{job.id}}">{{job.cargo}}</a></span>
+                                <a href="aplication/{{job.id}}"><span><i class="fas fa-edit"></i></span></a>
+                            </li>
+                    {% endfor %}
+            {% else %}
+                <ul class="task-list">
+                {% for job in jobs %}
+                        <li class="task-item done">
+                            <span><a href="/job/{{job.id}}">{{job.cargo}}</a></span>
+                        </li>
+                {% endfor %}
+            {% endif %}
         {% endif %}
         <div class="pagination">
             <span class="step-links">

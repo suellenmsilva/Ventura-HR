@@ -4,17 +4,37 @@
 
 {% block content %}
         <div class="offset-1 col-10 list-div">
-                <h1>{{job.cargo}}</h1>
-                <h3>Descrição = {{job.description}}</h3>
-                <h3>Empresa = {{job.user}}</h3>
-                <h3>Contrato = {{job.contract_type}}</h3>
-                <h3>Cidade = {{job.city}}</h3>
-                <h3>Estado = {{job.state}}</h3>
-                <h3>Criterio = {{job.criterict}}</h3>
-                {% if perms.jobs.add_jobs %}
-                <h3>Participantes = {{list}}</h3>
-                {% endif %}
 
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Cargo</th>
+                      <th scope="col">Descrição</th>
+                      <th scope="col">Empresa</th>
+                      <th scope="col">Contrato</th>
+                      <th scope="col">Cidade</th>
+                      <th scope="col">Estado</th>
+                      <th scope="col">Criterio</th>
+                      {% if perms.jobs.add_jobs %}
+                      <th scope="col">Participantes</th>
+                       {% endif %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">{{job.cargo}}</th>
+                      <td>{{job.description}}</td>
+                      <td>{{job.user.first_name}}</td>
+                      <td>{{job.contract_type}}</td>
+                      <td>{{job.city}}</td>
+                      <td>{{job.state}}</td>
+                      <td>{{job.criterict}}</td>
+                      {% if perms.jobs.add_jobs %}
+                       <td>{{list}}</td>
+                      {% endif %}
+                    </tr>
+                  </tbody>
+                </table>
                 <a id="add-li" href="/aplication/{{job.id}}">
                         <div class="col-2 add-div">
                                 <i class="fas fa-plus"></i> Aplicar uma Vaga
