@@ -20,4 +20,4 @@ class CriterioModelForm(forms.ModelForm):
 
     class Meta:
         model = Criterio
-        fields = ['criterict']
+        fields = ['criterict', 'experience']
