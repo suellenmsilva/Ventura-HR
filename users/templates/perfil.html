@@ -4,10 +4,94 @@
 
 {% block content %}
 <div class="offset-1 col-10 list-div">
-
-    <h1>{{perfil.username}}</h1>
-    <p>{{perfil.first_name}}</p>
-    <p>{{perfil.last_name}}</p>
-    <p>{{perfil.fone}}</p>
+    <h4> Informações do Usuário</h4>
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Nome</th>
+      <th scope="col">Sobrenome</th>
+      <th scope="col">Email</th>
+      <th scope="col">Telefone</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">{{perfil.first_name}}</th>
+      <td>{{perfil.last_name}}</td>
+      <td>{{perfil.email}}</td>
+      <td>{{perfil.fone}}</td>
+    </tr>
+  </tbody>
+</table>
+    {% if perms.jobs.add_jobs %}
+        <h4>Vagas Publicadas {{list}}</h4>
+            {% for job in jobs %}
+    <div class="table-responsive">
+          <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Cargo</th>
+              <th scope="col">Criterio</th>
+              <th scope="col">Tipo de Contrato</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">{{job.cargo}}</th>
+              <td>{{job.criterict}}</td>
+                <td>{{job.contract_type}}</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+            {% endfor %}
+        <h4>Vagas Respondidas {{lists}}</h4>
+            {% for aplication in aplications %}
+     <div class="table-responsive">
+          <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Candidato</th>
+              <th scope="col">Vaga</th>
+              <th scope="col">Resposta</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">{{aplication}}</th>
+              <td>{{aplication.jobs_id}}</td>
+               <td>{{aplication.Answer}}</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+    {% endfor %}
+    {% else %}
+        <h4> Vagas Aplicadas</h4>
+            {% for job in jobs %}
+<div class="table-responsive">
+          <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Cargo</th>
+              <th scope="col">Resposta</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">{{job.jobs}}</th>
+              <td>{{job.Answer}}</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+            {% endfor %}
+    {% endif %}
+    <a id="add-lin" href="/edit_user/{{perfil.id}}">
+        <div class="col-2 add-div">
+            <i class="fas fa-plus"></i> Editar Informações
+        </div>
+    </a>
+    <a href="/delete_user/{{perfil.id}}" class="delete-btn"><span><i class="fas fa-trash"></i></span></a>
 </div>
 {% endblock %}

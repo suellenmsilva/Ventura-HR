@@ -24,7 +24,7 @@
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/perfil/id">Perfil</a>
+                        <a class="nav-link" href="/perfil/{{user.id}}">Perfil</a>
                     </li>
                     <li class="nav-item">
                             <a class="nav-link" href="/">Vagas</a>
@@ -35,6 +35,10 @@
                     </li>
                     {% endif %}
                     {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <h6><p></p>
+                            {{ user.first_name }} </h6>
+                    </li>
                     <li class="nav-item">
                             <a class="nav-link" href="/contas/logout">Sair</a>
                     </li>
