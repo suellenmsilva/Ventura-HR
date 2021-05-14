@@ -3,6 +3,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
 
+from .Specification import UserSpecification, SuperUserSpecification
+from .Strategy import JobsFilter, JobsFilterSuperUser
 from .models import Jobs, Aplication
 from .forms import JobModelForm, CriterioModelForm, AplicationModelForm
 
@@ -14,51 +16,47 @@ temos tratamento de permições'''
 def jobs(request):
 
     search = request.GET.get('search')
+    root_specification = UserSpecification().and_(SuperUserSpecification())
+    result_user = root_specification.is_satisfied_by(request.user)
 
     if search:
         jobs = Jobs.objects.filter(cargo__icontains=search)
 
-    elif request.user.has_perm('jobs.add_jobs'):
-        job_list = Jobs.objects.all().order_by('-creation_date').filter(user=request.user)
-        paginator = Paginator(job_list, 5)
-        page = request.GET.get('page')
-        jobs = paginator.get_page(page)
+    elif result_user == True:
+        jobs = JobsFilterSuperUser().filter(request)
 
     else:
-        job_list = Jobs.objects.all().order_by('-creation_date')
-        paginator = Paginator(job_list, 5)
-        page = request.GET.get('page')
-        jobs = paginator.get_page(page)
+        jobs = JobsFilter().filter(request)
 
     return render(request, 'list_jobs.html', {'jobs': jobs})
 
 
 ''' Adicionar uma nova vaga, exclusivo para empresa '''
-
-
-@permission_required('jobs.add_jobs')
 @login_required
 def new_job(request):
 
     if str(request.method) == 'POST':
 
         form = JobModelForm(request.POST)
-        if form.is_valid():
-            job = form.save(commit=False)
+        root_specification = UserSpecification().and_(SuperUserSpecification())
+        result_user = root_specification.is_satisfied_by(request.user)
+        if result_user == True:
+            if form.is_valid():
+                job = form.save(commit=False)
 
-            job.user = request.user
-            job.save()
-            return redirect('/')
+                job.user = request.user
+                job.save()
+                return redirect('/')
+            else:
+                messages.error(request, 'Erro ao cadastrar vaga ')
         else:
-            messages.error(request, 'Erro ao cadastrar vaga ')
-    else:
-        form = JobModelForm()
-        return render(request, 'add_jobs.html', {'form': form})
+            form = JobModelForm()
+            return render(request, 'add_jobs.html', {'form': form})
 
     return redirect('/')
 
 
-''' Adicionando um criterio, fluxonão esta certo, deve ser feito uma refatoração e uma melhoria na construção'''
+''' Adicionando um criterio, fluxo não esta certo, deve ser feito uma refatoração e uma melhoria na construção'''
 
 
 @login_required
