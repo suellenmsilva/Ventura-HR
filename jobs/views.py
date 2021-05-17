@@ -1,10 +1,9 @@
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, permission_required
-from django.core.paginator import Paginator
 
-from .Specification import UserSpecification, SuperUserSpecification
-from .Strategy import JobsFilter, JobsFilterSuperUser
+from .Factory import JobFactory, NewFactory
+from .Specification import NameUser
 from .models import Jobs, Aplication
 from .forms import JobModelForm, CriterioModelForm, AplicationModelForm
 
@@ -14,51 +13,25 @@ temos tratamento de permições'''
 
 
 def jobs(request):
+    job_factory = JobFactory()
 
-    search = request.GET.get('search')
-    root_specification = UserSpecification().and_(SuperUserSpecification())
-    result_user = root_specification.is_satisfied_by(request.user)
+    job_request = job_factory.job(request)
 
-    if search:
-        jobs = Jobs.objects.filter(cargo__icontains=search)
+    return job_request
 
-    elif result_user == True:
-        jobs = JobsFilterSuperUser().filter(request)
-
-    else:
-        jobs = JobsFilter().filter(request)
-
-    return render(request, 'list_jobs.html', {'jobs': jobs})
 
 
 ''' Adicionar uma nova vaga, exclusivo para empresa '''
 @login_required
 def new_job(request):
+    new_factory = NewFactory()
 
-    if str(request.method) == 'POST':
+    new_request = new_factory.new_job(request)
 
-        form = JobModelForm(request.POST)
-        root_specification = UserSpecification().and_(SuperUserSpecification())
-        result_user = root_specification.is_satisfied_by(request.user)
-        if result_user == True:
-            if form.is_valid():
-                job = form.save(commit=False)
-
-                job.user = request.user
-                job.save()
-                return redirect('/')
-            else:
-                messages.error(request, 'Erro ao cadastrar vaga ')
-        else:
-            form = JobModelForm()
-            return render(request, 'add_jobs.html', {'form': form})
-
-    return redirect('/')
+    return new_request
 
 
 ''' Adicionando um criterio, fluxo não esta certo, deve ser feito uma refatoração e uma melhoria na construção'''
-
-
 @login_required
 def new_criterio(request):
 
@@ -68,7 +41,7 @@ def new_criterio(request):
         if form.is_valid():
             criterio = form.save(commit=False)
 
-            criterio.user = request.user
+            criterio.user = NameUser.user(request)
             criterio.save()
             return redirect('/newjob')
         else:
@@ -130,7 +103,7 @@ def aplication(request, id):
 
             aplication = form.save(commit=False)
 
-            aplication.user = request.user
+            aplication.user = NameUser.user(request)
             aplication.jobs = job
 
             aplication.save()

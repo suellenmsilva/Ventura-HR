@@ -42,3 +42,22 @@ class NotSpecification(BaseSpecification):
         return not self.subject.is_satisfied_by(candidate)
 
 
+# Usage
+class User:
+    def __init__(self, super_user=False):
+        self.super_user = super_user
+
+class UserSpecification(BaseSpecification):
+    def is_satisfied_by(self, candidate):
+        return isinstance(candidate, User)
+
+class SuperUserSpecification(BaseSpecification):
+    def is_satisfied_by(self, candidate):
+        return getattr(candidate, 'super_user', False)
+
+
+
+class NameUser():
+    def user(self, request):
+        name = request.user
+        return name
